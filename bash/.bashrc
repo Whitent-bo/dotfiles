@@ -137,3 +137,9 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 # Customizations for Kitty and Syntax Highlighting
 alias cat='batcat --theme="Nord" --style=plain --paging=never'
 export PS1='\[\033[01;34m\]┌──(\[\033[01;32m\]\u㉿\h\[\033[01;34m\])-[\[\033[01;37m\]\w\[\033[01;34m\]]\n\[\033[01;34m\]└─\[\033[01;32m\]$ \[\033[00m\]'
+
+# Cargar variables de entorno y secretos locales (nunca incluidos en git)
+if [ -f "$HOME/.secrets/env" ]; then
+    . "$HOME/.secrets/env"
+fi
+
