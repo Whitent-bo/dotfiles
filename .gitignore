@@ -1,0 +1,23 @@
+# Archivos de respaldo y temporales
+*.bak
+*.tmp
+*.log
+*~
+
+# Python / Caches
+__pycache__/
+*.pyc
+
+# Secretos y llaves privadas
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+.env
+*token*
+
+# Atuin / Bases de datos locales
+*.db
+*.db-journal
+*.db-wal
+atuin-receipt.json

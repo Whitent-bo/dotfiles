@@ -1,0 +1,39 @@
+# ========================================================
+# Paquetes Indispensables - Debian GNU/Linux (i3 + Terminal)
+# ========================================================
+
+# Gestor de ventanas y utilidades de interfaz gráfica
+i3-wm
+i3status
+i3lock
+polybar
+rofi
+picom
+nitrogen
+kitty
+x11-xserver-utils
+feh
+pavucontrol
+pulseaudio
+bc
+
+# Shell y extensiones
+bash
+bash-completion
+
+# Herramientas de terminal e inspección del sistema
+bat
+btop
+htop
+fastfetch
+ranger
+curl
+wget
+git
+pipx
+aria2
+jq
+tree
+tmux
+unzip
+tar

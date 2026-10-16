@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /home/whitent/Escritorio/pomodoro/.venv/bin/python /home/whitent/Escritorio/pomodoro/app.py "$@"
