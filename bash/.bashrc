@@ -111,9 +111,49 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+# Fastfetch: solo ejecutar si es la única terminal abierta en el área de trabajo de i3
+if [[ $- == *i* ]] && [ -z "$VIM" ] && [ -z "$INSIDE_EMACS" ]; then
+    if command -v i3-msg >/dev/null 2>&1 && command -v jq >/dev/null 2>&1 && [ -n "$I3SOCK" -o -n "$DISPLAY" ]; then
+        _other_terms=$(i3-msg -t get_tree 2>/dev/null | jq -r --arg wid "${WINDOWID:--1}" '
+            [
+              recurse(.nodes[]?, .floating_nodes[]?)
+              | select(.type == "workspace" and .focused)
+              | recurse(.nodes[]?, .floating_nodes[]?)
+              | select(.window != null and (.window_properties.class // "" | test("(?i)kitty|terminal|alacritty|xterm|urxvt")))
+              | select(.window != ($wid | tonumber?))
+            ] | length' 2>/dev/null)
+        if [ "${_other_terms:-0}" -eq 0 ]; then
+            fastfetch
+            _ff_initial=1
+            _ff_winch_handler() {
+                if [ "${_ff_initial:-0}" -eq 1 ]; then
+                    clear
+                    if [ "$(tput cols 2>/dev/null || echo 80)" -ge 65 ]; then
+                        fastfetch
+                    fi
+                fi
+            }
+            trap '_ff_winch_handler' WINCH
+            _ff_cleanup() {
+                _ff_initial=0
+                trap - WINCH
+            }
+            _ff_prompt_count=0
+            _ff_check_prompt() {
+                _ff_prompt_count=$((_ff_prompt_count + 1))
+                if [ "$_ff_prompt_count" -gt 1 ]; then
+                    _ff_cleanup
+                fi
+            }
+            PROMPT_COMMAND="_ff_check_prompt${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+        fi
+        unset _other_terms
+    else
+        fastfetch
+    fi
+fi
 
-#idk
-fastfetch 
+
 
 
 # Created by `pipx` on 2026-04-21 02:04:39
